@@ -60,6 +60,7 @@ algebra_lights_out/
 |-- main.py
 |-- solver.py
 |-- juego.py
+|-- partida.py
 |-- interfaz.py
 |-- demo_consigna.py
 |-- .gitignore
@@ -104,6 +105,22 @@ Este módulo:
 
 Si la generación aleatoria deja todas las luces apagadas, se aplica una pulsación
 adicional para que la partida comience con luces encendidas.
+### Gestión de la partida
+
+Archivo principal:
+
+```text
+interfaz.py
+```
+Este módulo:
+
+  - encapsula el estado y la lógica de negocio de una partida activa (PartidaLightsOut)
+
+  - administra el tablero actual, el tablero inicial, el contador de movimientos, el tamaño del tablero y los mensajes de estado
+
+  - delega las reglas en juego.py y la resolución matemática en solver.py
+
+  - gestiona las pistas de solución y las actualiza automáticamente tras cada jugada mediante operaciones en Z₂
 
 ### Interfaz gráfica
 
