@@ -1,0 +1,112 @@
+# =========================
+# Python
+# =========================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+ENV/
+
+# Dependencias / paquetes
+*.egg-info/
+.eggs/
+dist/
+build/
+pip-wheel-metadata/
+
+# =========================
+# IDEs / Editores
+# =========================
+
+# VS Code
+.vscode/
+
+# JetBrains / PyCharm
+.idea/
+*.iml
+
+# =========================
+# Sistema operativo
+# =========================
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+# =========================
+# Testing
+# =========================
+
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# =========================
+# Logs
+# =========================
+
+*.log
+
+# =========================
+# Archivos temporales
+# =========================
+
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# =========================
+# Variables de entorno
+# =========================
+
+.env
+.env.*
+!.env.example
+
+# =========================
+# Pygame / proyecto
+# =========================
+
+# Capturas o archivos generados durante pruebas
+screenshots/
+output/
+outputs/
+
+# =========================
+# LaTeX
+# =========================
+
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+
+# PDF generado desde LaTeX
+# Descomentar si NO querés subir el informe compilado:
+# *.pdf
