@@ -105,12 +105,13 @@ Este módulo:
 
 Si la generación aleatoria deja todas las luces apagadas, se aplica una pulsación
 adicional para que la partida comience con luces encendidas.
+
 ### Gestión de la partida
 
 Archivo principal:
 
 ```text
-interfaz.py
+partida.py
 ```
 Este módulo:
 
@@ -143,7 +144,8 @@ La interfaz utiliza Pygame y permite:
 - consultar el contador de movimientos;
 - generar una partida nueva o reiniciar la actual;
 - mostrar las celdas que deben presionarse para resolver el estado actual;
-- recibir un mensaje de victoria al apagar todas las luces.
+- mostrar una ventana emergente «¡Ganaste!» al apagar todas las luces, con
+  opciones para iniciar otro juego o cerrar la aplicación.
 
 Las luces encendidas se muestran en rojo y las apagadas en verde. Las celdas
 indicadas por la solución tienen un borde y un punto amarillo.
@@ -251,7 +253,12 @@ En Windows también pueden utilizarse los comandos `py main.py` y
 - **Mostrar solución**: señala las celdas que deben presionarse para apagar el
   tablero actual. Las pistas se actualizan después de cada pulsación.
 - **− / +**: disminuye o aumenta el tamaño del tablero e inicia una nueva partida.
-- **Escape o cerrar la ventana**: termina la aplicación.
+- **Escape o cerrar la ventana**: termina la aplicación durante la partida.
+
+Al ganar aparece una ventana emergente que bloquea el tablero y los controles.
+No se puede descartar con Escape, el cierre de la ventana ni clics fuera del
+cuadro: hay que elegir **Iniciar otro juego**, que genera otra partida del mismo
+tamaño y reinicia el contador, o **Cerrar aplicación**, que termina el juego.
 
 Las celdas señaladas pueden presionarse en cualquier orden, porque las
 pulsaciones conmutan. Presionar una misma celda dos veces cancela su efecto.
@@ -281,7 +288,7 @@ Al ejecutar el proyecto se obtiene:
 
 - una ventana interactiva de Lights Out al ejecutar `main.py`;
 - una solución visual para el tablero actual al usar **Mostrar solución**;
-- un mensaje de victoria cuando todas las luces quedan apagadas;
+- una ventana emergente «¡Ganaste!» cuando todas las luces quedan apagadas;
 - el desarrollo algebraico del ejemplo 3×3 por consola al ejecutar
   `demo_consigna.py`;
 - la confirmación de que la solución del ejemplo cumple el sistema y apaga el tablero.
