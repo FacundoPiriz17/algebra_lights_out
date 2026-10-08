@@ -38,6 +38,11 @@ class InterfazLightsOut:
             "reiniciar": pygame.Rect(288, 689, 204, 48),
             "solucion": pygame.Rect(516, 689, 204, 48),
         }
+        self.ventana_victoria = pygame.Rect(140, 261, 500, 260)
+        self.botones_victoria = {
+            "nuevo": pygame.Rect(190, 375, 400, 48),
+            "cerrar": pygame.Rect(190, 439, 400, 48),
+        }
         self.n = n
         self.tablero: list[list[int]] = []
         self.inicial: list[list[int]] = []
@@ -56,6 +61,7 @@ class InterfazLightsOut:
         self.tablero = copiar_tablero(self.inicial)
         self.movimientos = 0
         self.solucion = None
+        self.victoria = False
         self.mensaje = "Apagá todas las luces. Cada clic cambia una cruz."
 
     def mostrar_solucion(self) -> None:
@@ -66,6 +72,7 @@ class InterfazLightsOut:
     def _actualizar_mensaje(self) -> None:
         """Comunica victoria, incompatibilidad o pulsaciones pendientes."""
         if esta_resuelto(self.tablero):
+            self.victoria = True
             self.mensaje = "¡Victoria! Todas las luces están apagadas."
         elif self.solucion is None:
             self.mensaje = "No existe solución para este tablero."
@@ -87,6 +94,14 @@ class InterfazLightsOut:
 
     def gestionar_evento(self, evento: pygame.event.Event) -> bool:
         """Procesa eventos; devuelve si continúa la aplicación."""
+        if self.victoria:
+            # La victoria exige elegir una opción antes de continuar o salir.
+            if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
+                if self.botones_victoria["nuevo"].collidepoint(evento.pos):
+                    self.nuevo_juego()
+                elif self.botones_victoria["cerrar"].collidepoint(evento.pos):
+                    return False
+            return True
         if evento.type == pygame.QUIT:
             return False
         if evento.type == pygame.KEYDOWN and evento.key == pygame.K_ESCAPE:
@@ -169,8 +184,34 @@ class InterfazLightsOut:
             self.pantalla.blit(etiqueta, texto_rect)
             izquierda = texto_rect.right + separacion_elementos
 
+    def _dibujar_victoria(self) -> None:
+        """Muestra un cuadro modal con las dos opciones al ganar."""
+        sombra = pygame.Surface(self.pantalla.get_size(), pygame.SRCALPHA)
+        sombra.fill((0, 0, 0, 175))
+        self.pantalla.blit(sombra, (0, 0))
+        pygame.draw.rect(self.pantalla, PANEL, self.ventana_victoria,
+                         border_radius=16)
+        pygame.draw.rect(self.pantalla, ACENTO, self.ventana_victoria,
+                         width=2, border_radius=16)
+        titulo = self.titulo.render("¡Ganaste!", True, ACENTO)
+        self.pantalla.blit(titulo, titulo.get_rect(center=(390, 302)))
+        detalle = self.pequena.render(
+            f"Apagaste todas las luces en {self.movimientos} movimientos.",
+            True, TEXTO,
+        )
+        self.pantalla.blit(detalle, detalle.get_rect(center=(390, 345)))
+        etiquetas = {
+            "nuevo": "Iniciar otro juego", "cerrar": "Cerrar aplicación",
+        }
+        cursor = pygame.mouse.get_pos()
+        for nombre, rect in self.botones_victoria.items():
+            color = (52, 71, 94) if rect.collidepoint(cursor) else FONDO
+            pygame.draw.rect(self.pantalla, color, rect, border_radius=9)
+            imagen = self.fuente.render(etiquetas[nombre], True, TEXTO)
+            self.pantalla.blit(imagen, imagen.get_rect(center=rect.center))
+
     def dibujar(self) -> None:
-        """Dibuja tablero, pistas, contador, mensajes y botones."""
+        """Dibuja la partida y, al ganar, el cuadro modal de victoria."""
         self.pantalla.fill(FONDO)
         self._texto("LIGHTS OUT", (60, 27), self.titulo)
         self._texto(
@@ -214,10 +255,12 @@ class InterfazLightsOut:
                                        TEXTO if habilitado else SECUNDARIO)
             self.pantalla.blit(imagen, imagen.get_rect(center=rect.center))
         self._dibujar_leyenda()
+        if self.victoria:
+            self._dibujar_victoria()
 
 
 def iniciar_interfaz() -> None:
-    """Ejecuta la ventana Pygame hasta cerrarla o presionar Escape."""
+    """Ejecuta Pygame y exige elegir una opción del cuadro al ganar."""
     pygame.display.init()
     pygame.font.init()
     try:
